@@ -11,7 +11,7 @@ export class SudokuGrid implements Sudoku {
         this.squareSize = Math.sqrt(size);
         this.grid = new Array(size)
             .fill(null)
-            .map(() => new Array(size).fill({ value: null, isFinal: false }));
+            .map(() => new Array(size).fill({ value: null, isFinal: false, options: new Array(size).fill(null).map((_, i) => i + 1) }));
     }
 
     private validateSize(size: number) {

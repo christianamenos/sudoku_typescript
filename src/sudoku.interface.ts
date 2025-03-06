@@ -1,5 +1,6 @@
 export interface SudokuCell {
     value: any;
+    options: any[];
     isFinal: boolean;
 }
 
