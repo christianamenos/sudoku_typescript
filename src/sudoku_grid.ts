@@ -1,0 +1,55 @@
+import { Sudoku } from "./sudoku.interface";
+
+export class SudokuGrid implements Sudoku {
+    protected grid: Array<Array<any>>;
+    protected size: number;
+    protected squareSize: number;
+
+    constructor(size: number) {
+        this.size = size;
+        this.squareSize = Math.sqrt(size);
+        this.grid = new Array(size)
+            .fill(null)
+            .map(() => new Array(size).fill(null));
+    }
+
+    getSize(): number {
+        return this.size;
+    }
+
+    getRow(row: number): any[] {
+        if (this.isIndexOutOfBounds(row)) {
+            throw new Error("Invalid row");
+        }
+        return this.grid[row];
+    }
+
+    getColumn(col: number): any[] {
+        if (this.isIndexOutOfBounds(col)) {
+            throw new Error("Invalid column");
+        }
+        return this.grid.map(row => row[col]);
+    }
+
+    getItem(row: number, column: number): any {
+        return this.grid[row][column];
+    }
+
+    getSquare(squareRow: number, squareColumn: number): any[] {
+        if (this.isSquareOutOfBounds(squareRow, squareColumn)) {
+            throw new Error("Invalid square");
+        }
+        return this.grid
+            .slice(squareRow * this.squareSize, squareRow * this.squareSize + this.squareSize)
+            .map(row => row.slice(squareColumn * this.squareSize, squareColumn * this.squareSize + this.squareSize))
+            .reduce((acc, val) => acc.concat(val), []);
+    }
+
+    private isIndexOutOfBounds(index: number): boolean {
+        return index < 0 || index >= this.size;
+    }
+
+    private isSquareOutOfBounds(squareRow: number, squareColumn: number) {
+        return squareRow < 0 || squareRow >= this.squareSize || squareColumn < 0 || squareColumn >= this.squareSize;
+    }
+}
