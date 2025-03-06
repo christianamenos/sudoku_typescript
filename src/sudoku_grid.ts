@@ -6,11 +6,21 @@ export class SudokuGrid implements Sudoku {
     protected squareSize: number;
 
     constructor(size: number) {
+        this.validateSize(size);
         this.size = size;
         this.squareSize = Math.sqrt(size);
         this.grid = new Array(size)
             .fill(null)
             .map(() => new Array(size).fill(null));
+    }
+
+    private validateSize(size: number) {
+        if (size < 4) {
+            throw new Error('Sudokus must be of size 4 or above');
+        }
+        if (Math.sqrt(size) % 1 !== 0) {
+            throw new Error('Sudokus must be based on a power of 2 value');
+        }
     }
 
     getSize(): number {
