@@ -1,7 +1,12 @@
+export interface SudokuCell {
+    value: any;
+    isFinal: boolean;
+}
+
 export interface Sudoku {
     getSize(): number;
-    getItem(row: number, column: number): any;
-    getRow(row: number): any[];
-    getColumn(column: number): any[];
-    getSquare(squareRow: number, squareColumn: number): any[];
+    getCell(row: number, column: number): SudokuCell;
+    getRow(row: number): SudokuCell[];
+    getColumn(column: number): SudokuCell[];
+    getSquare(squareRow: number, squareColumn: number): SudokuCell[];
 }

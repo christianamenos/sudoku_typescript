@@ -1,7 +1,7 @@
-import { Sudoku } from "./sudoku.interface";
+import { Sudoku, SudokuCell } from "./sudoku.interface";
 
 export class SudokuGrid implements Sudoku {
-    protected grid: Array<Array<any>>;
+    protected grid: Array<Array<SudokuCell>>;
     protected size: number;
     protected squareSize: number;
 
@@ -11,7 +11,7 @@ export class SudokuGrid implements Sudoku {
         this.squareSize = Math.sqrt(size);
         this.grid = new Array(size)
             .fill(null)
-            .map(() => new Array(size).fill(null));
+            .map(() => new Array(size).fill({ value: null, isFinal: false }));
     }
 
     private validateSize(size: number) {
@@ -27,25 +27,25 @@ export class SudokuGrid implements Sudoku {
         return this.size;
     }
 
-    getRow(row: number): any[] {
+    getRow(row: number): SudokuCell[] {
         if (this.isIndexOutOfBounds(row)) {
             throw new Error("Invalid row");
         }
         return this.grid[row];
     }
 
-    getColumn(col: number): any[] {
+    getColumn(col: number): SudokuCell[] {
         if (this.isIndexOutOfBounds(col)) {
             throw new Error("Invalid column");
         }
         return this.grid.map(row => row[col]);
     }
 
-    getItem(row: number, column: number): any {
+    getCell(row: number, column: number): SudokuCell {
         return this.grid[row][column];
     }
 
-    getSquare(squareRow: number, squareColumn: number): any[] {
+    getSquare(squareRow: number, squareColumn: number): SudokuCell[] {
         if (this.isSquareOutOfBounds(squareRow, squareColumn)) {
             throw new Error("Invalid square");
         }
@@ -59,7 +59,7 @@ export class SudokuGrid implements Sudoku {
         return index < 0 || index >= this.size;
     }
 
-    private isSquareOutOfBounds(squareRow: number, squareColumn: number) {
+    private isSquareOutOfBounds(squareRow: number, squareColumn: number): boolean {
         return squareRow < 0 || squareRow >= this.squareSize || squareColumn < 0 || squareColumn >= this.squareSize;
     }
 }
