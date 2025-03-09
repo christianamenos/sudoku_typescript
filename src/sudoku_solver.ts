@@ -2,9 +2,9 @@ import { Sudoku, SudokuCell } from "./sudoku.interface";
 
 export class SudokuSolver {
 
-    solveSudoku(sudoku: Sudoku): Sudoku {
-        if (this.isInvalidSudoku(sudoku)) return null;
-        if (this.isFilledSudoku(sudoku)) return sudoku;
+    solveSudoku(sudoku: Sudoku, iterations: number): { sudoku: Sudoku, iterations: number } {
+        if (this.isInvalidSudoku(sudoku)) return { sudoku: null, iterations: Infinity };
+        if (this.isFilledSudoku(sudoku)) return { sudoku, iterations };
 
         const newSudoku = sudoku.copy();
         const { row, col } = this.searchPositionsWithLowerNumberOfOptions(newSudoku);
@@ -14,8 +14,11 @@ export class SudokuSolver {
             options = options.filter(value => value !== option);
             newSudoku.getCell(row, col).value = option;
             this.removeOption(newSudoku, option, row, col);
-            const result = this.solveSudoku(newSudoku);
-            if (result != null) return result;
+            const result = this.solveSudoku(newSudoku, iterations + 1);
+            if (result != null) return {
+                sudoku: result.sudoku,
+                iterations: result.iterations
+            };
         }
         return null;
     }
