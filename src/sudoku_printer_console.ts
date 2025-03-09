@@ -10,5 +10,6 @@ export class SudokuPrinterConsole implements SudokuPrinter {
                 .join(' ')
             );
         }
+        console.log('');
     }
 }

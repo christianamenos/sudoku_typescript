@@ -27,6 +27,10 @@ export class SudokuGrid implements Sudoku {
         return this.size;
     }
 
+    getSquareSize(): number {
+        return this.squareSize;
+    }
+
     getRow(row: number): SudokuCell[] {
         if (this.isIndexOutOfBounds(row)) {
             throw new Error("Invalid row");
@@ -53,6 +57,18 @@ export class SudokuGrid implements Sudoku {
             .slice(squareRow * this.squareSize, squareRow * this.squareSize + this.squareSize)
             .map(row => row.slice(squareColumn * this.squareSize, squareColumn * this.squareSize + this.squareSize))
             .reduce((acc, val) => acc.concat(val), []);
+    }
+
+    copy(): SudokuGrid {
+        const copy = new SudokuGrid(this.size);
+        copy.size = this.size;
+        copy.squareSize = this.squareSize;
+        for (let i = 0; i < this.size; i++) {
+            for (let j = 0; j < this.size; j++) {
+                copy.grid[i][j] = { ...this.grid[i][j] };
+            }
+        }
+        return copy;
     }
 
     private isIndexOutOfBounds(index: number): boolean {
